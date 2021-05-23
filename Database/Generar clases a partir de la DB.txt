@@ -1,0 +1,3 @@
+#Ejecutar en la consola de administrador de paquetes del proyecto
+
+ Scaffold-DbContext "Data Source=zeus101\sql2017;Initial Catalog=InventarioVsPRUEBA;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Tables color

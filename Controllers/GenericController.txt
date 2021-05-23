@@ -1,0 +1,183 @@
+﻿/*
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using WebApplication_API.Models;
+
+namespace WebApplication_API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ColorsController : ControllerBase
+    {
+        private IConfiguration _configuration;
+        private int ModelId=1;
+
+        public ColorsController(IConfiguration Configuration)
+        {
+            _configuration = Configuration;
+        }
+
+        // GET: api/Colors
+        [HttpGet]
+        public List<Color> Get()
+        {  
+                SqlConnection sqlCon = null;
+                string SqlconString = _configuration.GetConnectionString("DefaultConnection");
+                using (sqlCon = new SqlConnection(SqlconString))
+                {
+                    sqlCon.Open();
+                    SqlCommand sql_cmnd = new SqlCommand("SpAPI", sqlCon);
+                    sql_cmnd.CommandType = CommandType.StoredProcedure;
+                    sql_cmnd.Parameters.AddWithValue("@OP", SqlDbType.VarChar).Value = "SA";
+                    sql_cmnd.Parameters.AddWithValue("@ModelId", SqlDbType.VarChar).Value = ModelId;
+                    
+                    List<Color> list = new List<Color>();
+                    
+                using (SqlDataReader rdr = sql_cmnd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            Color ob = new Color();
+                            ob.Iden = (decimal)rdr["Iden"];
+                            ob.Codigo = rdr["codigo"].ToString();
+                            ob.Nombre = rdr["nombre"].ToString();
+                            list.Add(ob);
+                        }
+                    }
+
+                sqlCon.Close();
+
+                    return list;
+                }
+        }
+
+        // GET: api/Colors/5
+        [HttpGet("{id}", Name = "Get")]
+        public Color Get(decimal id)
+        {            
+                Color model = new Color();
+                model.Iden = id;
+
+                SqlConnection sqlCon = null;
+                string SqlconString = _configuration.GetConnectionString("DefaultConnection");
+                using (sqlCon = new SqlConnection(SqlconString))
+                {
+                    sqlCon.Open();
+                    SqlCommand sql_cmnd = new SqlCommand("SpAPI", sqlCon);
+                    sql_cmnd.CommandType = CommandType.StoredProcedure;
+                    sql_cmnd.Parameters.AddWithValue("@OP", SqlDbType.VarChar).Value = "S";
+                    sql_cmnd.Parameters.AddWithValue("@ModelId", SqlDbType.VarChar).Value = ModelId;
+                    sql_cmnd.Parameters.AddWithValue("@JSON", SqlDbType.VarChar).Value = JsonSerializer.Serialize(model);
+
+                    using (SqlDataReader rdr = sql_cmnd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            model.Iden = (decimal)rdr["Iden"];
+                            model.Codigo = rdr["Codigo"].ToString();
+                            model.Nombre = rdr["Nombre"].ToString();
+                        }
+                    }
+
+                sqlCon.Close();
+
+                return model;
+                }
+        }
+
+        // POST: api/Colors
+        [HttpPost]
+        public void Post([FromBody] Color model)
+        {
+            try
+            {
+                SqlConnection sqlCon = null;
+                string SqlconString = _configuration.GetConnectionString("DefaultConnection");
+                using (sqlCon = new SqlConnection(SqlconString))
+                {
+                    sqlCon.Open();
+                    SqlCommand sql_cmnd = new SqlCommand("SpAPI", sqlCon);
+                    sql_cmnd.CommandType = CommandType.StoredProcedure;
+                    sql_cmnd.Parameters.AddWithValue("@OP", SqlDbType.VarChar).Value = "I";
+                    sql_cmnd.Parameters.AddWithValue("@ModelId", SqlDbType.VarChar).Value = ModelId;
+                    sql_cmnd.Parameters.AddWithValue("@JSON", SqlDbType.VarChar).Value = JsonSerializer.Serialize(model); 
+                    
+                    sql_cmnd.ExecuteNonQuery();
+
+                    sqlCon.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                //model.TieneError = true;
+                //model.Error = e.ToString();
+                //List<Color> list = new List<Color>();
+
+            }            
+        }
+
+        // PUT: api/Colors/5
+        [HttpPut("{iden}")]
+        public void Put(decimal id, [FromBody] Color model)
+        {
+            try
+            {
+                SqlConnection sqlCon = null;
+                string SqlconString = _configuration.GetConnectionString("DefaultConnection");
+                using (sqlCon = new SqlConnection(SqlconString))
+                {
+                    sqlCon.Open();
+                    SqlCommand sql_cmnd = new SqlCommand("SpAPI", sqlCon);
+                    sql_cmnd.CommandType = CommandType.StoredProcedure;
+                    sql_cmnd.Parameters.AddWithValue("@OP", SqlDbType.VarChar).Value = "U";
+                    sql_cmnd.Parameters.AddWithValue("@ModelId", SqlDbType.VarChar).Value = ModelId;
+                    sql_cmnd.Parameters.AddWithValue("@JSON", SqlDbType.VarChar).Value = JsonSerializer.Serialize(model);
+
+                    sql_cmnd.ExecuteNonQuery();
+
+                    sqlCon.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                //model.TieneError = true;
+                //model.Error = e.ToString();
+                //List<Color> list = new List<Color>();
+
+            }
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public void Delete(decimal id)
+        {
+            Color model = new Color();
+            model.Iden = id;
+
+            SqlConnection sqlCon = null;
+            string SqlconString = _configuration.GetConnectionString("DefaultConnection");
+            using (sqlCon = new SqlConnection(SqlconString))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("SpAPI", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@OP", SqlDbType.VarChar).Value = "D";
+                sql_cmnd.Parameters.AddWithValue("@ModelId", SqlDbType.VarChar).Value = ModelId;
+                sql_cmnd.Parameters.AddWithValue("@JSON", SqlDbType.VarChar).Value = JsonSerializer.Serialize(model);
+
+                sql_cmnd.ExecuteNonQuery();
+
+                sqlCon.Close();
+            }
+        }
+    }
+}
+*/
